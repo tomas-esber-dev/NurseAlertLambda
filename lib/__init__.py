@@ -1,1 +1,1 @@
-# lib folder contains shared functionality for microservices mapped with lambda
+# lib folder contains shared functionality for microservices mapped to lambda

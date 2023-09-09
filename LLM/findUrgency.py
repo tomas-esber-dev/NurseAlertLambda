@@ -4,7 +4,7 @@ from collections import defaultdict
 import os
 import openai
 # Need python interpreter 3.10.12 for openai import to work
-openai.api_key = "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"
+openai.api_key = "API-KEY"  # replace with OPENAI API KEY
 
 
 def findUrgency(request):

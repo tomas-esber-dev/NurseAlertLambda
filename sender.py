@@ -1,13 +1,31 @@
+from LLM.findUrgency import findUrgency
+from database_access import getEmployeesInRoom
 import boto3
-
-# determine the urgency of a request using LLM
-def findUrgency(event, context):
-    return 0
+import json
 
 # consult database to find phone number and name for an available employee
-def send_message(urgency):
-    sns_client = boto3.client('sns')
-    response = sns_client.publish(PhoneNumber='+33680866163',
-                                  Message='A patient is requesting you with {urgency} urgency',
-                                  Subject='Message from Patient')
+def request_help(input, hospital_id, room_id):
+    urgency = findUrgency(input)
+    employees = json.loads(getEmployeesInRoom(hospital_id, room_id))
+    employeeToContact = None
+
+    if urgency == "high":
+        employees.sort(key=lambda emp: emp["priority"])
+        employeeToContact = employees[len(employees) -1]
+    elif urgency == "low":
+        employees.sort(key=lambda emp: emp["priority"])
+        employeeToContact = employees[0]
+    else:
+        employees.sort(key=lambda emp: abs(emp["priority"] - 3))
+        employeeToContact = employees[0]
+    if employeeToContact:
+        
+        print("Phone number", employeeToContact["number"])
+        print('Hello {}! A patient is requesting you with {} urgency'.format(employeeToContact["name"], urgency))
+        sns_client = boto3.client('sns', region_name='us-east-1')
+        response = sns_client.publish(PhoneNumber='+{}'.format(employeeToContact["number"]),
+                                    Message='Hello {}! A patient is requesting you with {} urgency'.format(employeeToContact["name"], urgency),
+                                    Subject='Message from Patient')
     return response
+
+print(request_help("I am coughing", 1, 1))

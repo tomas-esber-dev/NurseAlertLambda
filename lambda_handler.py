@@ -2,10 +2,10 @@ import sender, database_access
 
 # defines the methods mapped to lambda and accessed through API gateway endpoint.
 
-def handle_send_request(event, context):
+def handle_help_request(event, context):
     return {
         'statusCode': 200,
-        'body': sender.send_message(event["queryStringParameters"]["urgency"])
+        'body': sender.request_help(event["queryStringParameters"]["body"]["input"], event["queryStringParameters"]["hospital_id"], event["queryStringParameters"]["room_id"])
     }
 
 def handle_getEmployeesInRoom_request(event, context):

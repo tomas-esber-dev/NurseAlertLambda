@@ -1,10 +1,6 @@
-import json
-import numpy as np
-from collections import defaultdict
-import os
 import openai
 # Need python interpreter 3.10.12 for openai import to work
-openai.api_key = "API-KEY"  # replace with OPENAI API KEY
+openai.api_key = "API_KEY"  # replace with OPENAI API KEY
 
 
 def findUrgency(request):
@@ -15,7 +11,7 @@ def findUrgency(request):
             {"role": "user", "content": f"Classify the severity of the patient request with a one word response of 'high', 'medium', or 'low': {request}"}
         ]
     )
-    print(completion.choices[0].message['content'])
+    return completion.choices[0].message['content']
 
 
 def main():

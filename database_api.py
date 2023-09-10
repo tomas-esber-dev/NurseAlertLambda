@@ -1,7 +1,7 @@
 import mysql.connector;
 import yaml
 
-CONFIG_FILE = './lib/database/config.yml'
+CONFIG_FILE = './config.yml'
 with open(CONFIG_FILE, 'r') as file:
     config = yaml.safe_load(file)
 
